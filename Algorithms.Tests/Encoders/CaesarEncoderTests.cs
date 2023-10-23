@@ -1,26 +1,24 @@
 ﻿using Algorithms.Encoders;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
-using System;
 
 namespace Algorithms.Tests.Encoders
 {
-    public class CaesarEncoderTests
+    public static class CaesarEncoderTests
     {
-        private readonly Randomizer random = new Randomizer();
-        private readonly CaesarEncoder encoder = new CaesarEncoder();
-
-        private string RandomMessage => random.GetString();
-
         [Test]
-        [Parallelizable]
-        public void DecodedStringIsTheSame([Random(100)]int key)
+        public static void DecodedStringIsTheSame([Random(100)] int key)
         {
-            var message = RandomMessage;
+            // Arrange
+            var encoder = new CaesarEncoder();
+            var random = new Randomizer();
+            var message = random.GetString();
 
+            // Act
             var encoded = encoder.Encode(message, key);
             var decoded = encoder.Decode(encoded, key);
 
+            // Assert
             Assert.AreEqual(message, decoded);
         }
     }

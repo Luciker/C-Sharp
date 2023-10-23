@@ -1,13 +1,13 @@
-﻿using Algorithms.Compressors;
+﻿using System.Collections.Generic;
+using Algorithms.DataCompression;
 using NUnit.Framework;
-using System.Collections.Generic;
 
 namespace Algorithms.Tests.Compressors
 {
-    public class TranslatorTests
+    public static class TranslatorTests
     {
         [Test]
-        public void TranslateCorrectly()
+        public static void TranslateCorrectly()
         {
             // Arrange
             var translator = new Translator();

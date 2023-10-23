@@ -1,12 +1,12 @@
-﻿using Algorithms.Compressors;
-using Algorithms.Sorters;
+﻿using Algorithms.DataCompression;
+using Algorithms.Sorters.Comparison;
+using FluentAssertions;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
-using System;
 
-namespace Algorithms.Tests.DataCompression
+namespace Algorithms.Tests.Compressors
 {
-    public class HuffmanCompressorTests
+    public static class HuffmanCompressorTests
     {
         [Test]
         [TestCase("This is a string", "101010110111011101110111100011111010010010010011000")]
@@ -14,11 +14,10 @@ namespace Algorithms.Tests.DataCompression
         [TestCase("dddddddddd", "1111111111")]
         [TestCase("a", "1")]
         [TestCase("", "")]
-        [Parallelizable]
-        public void CompressingPhrase(string uncompressedText, string expectedCompressedText)
+        public static void CompressingPhrase(string uncompressedText, string expectedCompressedText)
         {
             //Arrange
-            var sorter = new BubbleSorter<ListNode>();
+            var sorter = new BubbleSorter<HuffmanCompressor.ListNode>();
             var translator = new Translator();
             var huffman = new HuffmanCompressor(sorter, translator);
 
@@ -32,11 +31,12 @@ namespace Algorithms.Tests.DataCompression
         }
 
         [Test]
-        [Parallelizable]
-        public void CompressingPhrase([Random(0, 1000, 1000)]int length)
+        public static void DecompressedTextTheSameAsOriginal(
+            [Random(0, 1000, 100, Distinct = true)]
+            int length)
         {
             //Arrange
-            var sorter = new BubbleSorter<ListNode>();
+            var sorter = new BubbleSorter<HuffmanCompressor.ListNode>();
             var translator = new Translator();
             var huffman = new HuffmanCompressor(sorter, translator);
             var text = Randomizer.CreateRandomizer().GetString(length);
@@ -47,6 +47,17 @@ namespace Algorithms.Tests.DataCompression
 
             //Assert
             Assert.AreEqual(text, decompressedText);
+        }
+
+        [Test]
+        public static void ListNodeComparer_NullIsUnordered()
+        {
+            var comparer = new HuffmanCompressor.ListNodeComparer();
+            var node = new HuffmanCompressor.ListNode('a', 0.1);
+
+            comparer.Compare(node, null).Should().Be(0);
+            comparer.Compare(null, node).Should().Be(0);
+            comparer.Compare(null, null).Should().Be(0);
         }
     }
 }

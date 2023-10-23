@@ -2,16 +2,21 @@
 
 namespace Algorithms.Numeric
 {
+    /// <summary>
+    ///     Algorithm used to find the inverse of any matrix that can be inverted.
+    /// </summary>
     public class GaussJordanElimination
     {
         private int RowCount { get; set; }
 
         /// <summary>
-        ///  Method to find a linear equation system using gaussian elimination.
+        ///     Method to find a linear equation system using gaussian elimination.
         /// </summary>
         /// <param name="matrix">The key matrix to solve via algorithm.</param>
-        /// <returns>whether the input matrix has a unique solution or not.
-        /// and solves on the given matrix. </returns>
+        /// <returns>
+        ///     whether the input matrix has a unique solution or not.
+        ///     and solves on the given matrix.
+        /// </returns>
         public bool Solve(double[,] matrix)
         {
             RowCount = matrix.GetUpperBound(0) + 1;
@@ -33,26 +38,20 @@ namespace Algorithms.Numeric
         }
 
         /// <summary>
-        /// To make simple validation of the matrix to be used.
+        ///     To make simple validation of the matrix to be used.
         /// </summary>
-        /// <param name="matrix">Multidimensional array matrix</param>
-        /// <returns>True: if algorithm can be use for given matrix; 
-        /// False: Otherwise </returns>
-        private bool CanMatrixBeUsed(double[,] matrix)
-        {
-            if (matrix == null || matrix.Length != RowCount * (RowCount + 1))
-            {
-                return false;
-            }
-
-            return RowCount > 1;
-        }
+        /// <param name="matrix">Multidimensional array matrix.</param>
+        /// <returns>
+        ///     True: if algorithm can be use for given matrix;
+        ///     False: Otherwise.
+        /// </returns>
+        private bool CanMatrixBeUsed(double[,] matrix) => matrix?.Length == RowCount * (RowCount + 1) && RowCount > 1;
 
         /// <summary>
-        /// To prepare given matrix by pivoting rows.
+        ///     To prepare given matrix by pivoting rows.
         /// </summary>
-        /// <param name="matrix"></param>
-        /// <returns>Matrix</returns>
+        /// <param name="matrix">Input matrix.</param>
+        /// <returns>Matrix.</returns>
         private bool PivotMatrix(ref double[,] matrix)
         {
             for (var col = 0; col + 1 < RowCount; col++)
@@ -87,6 +86,7 @@ namespace Algorithms.Numeric
         private int FindNonZeroCoefficient(ref double[,] matrix, int col)
         {
             var rowToSwap = col + 1;
+
             // To find a non-zero coefficient
             for (; rowToSwap < RowCount; rowToSwap++)
             {
@@ -100,9 +100,9 @@ namespace Algorithms.Numeric
         }
 
         /// <summary>
-        /// Applies REF.
+        ///     Applies REF.
         /// </summary>
-        /// <param name="matrix">Matrix</param>
+        /// <param name="matrix">Input matrix.</param>
         private void Elimination(ref double[,] matrix)
         {
             for (var srcRow = 0; srcRow + 1 < RowCount; srcRow++)
@@ -121,10 +121,10 @@ namespace Algorithms.Numeric
         }
 
         /// <summary>
-        /// To continue reducing the matrix using RREF.
+        ///     To continue reducing the matrix using RREF.
         /// </summary>
-        /// <param name="matrix"></param>
-        /// <returns></returns>
+        /// <param name="matrix">Input matrix.</param>
+        /// <returns>True if it has a unique solution; false otherwise.</returns>
         private bool ElementaryReduction(ref double[,] matrix)
         {
             for (var row = RowCount - 1; row >= 0; row--)
